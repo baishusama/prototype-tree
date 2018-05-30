@@ -1,0 +1,71 @@
+body {
+    background: #fff;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+/* optional Container STYLES */
+.chart {
+    height: 600px;
+    width: 900px;
+    margin: 5px;
+    margin: 15px auto;
+    border: 3px solid #ddd;
+    border-radius: 3px;
+}
+
+.prototype-draw {
+    width: 100px;
+    font-size: 10px;
+    text-align: center;
+}
+
+.prototype-draw.root {
+    height: 38px;
+}
+.prototype-draw.root:hover {
+    background: url('trophy.png') right 0 no-repeat;
+}
+.prototype-draw.root .node-name {
+    padding-left: 10px;
+    margin-top: 1px;
+    display: block;
+}
+
+.prototype-draw .node-name {
+    padding: 2px;
+    white-space: pre;
+    color: #00aff0;
+}
+.prototype-draw .node-desc {
+    padding: 2px;
+    color: #999;
+}
+
+.prototype-draw.first-draw .node-title,
+.prototype-draw.first-draw .node-name,
+.prototype-draw.first-draw img {
+    position: absolute;
+    top: -8px;
+}
+.prototype-draw.first-draw:hover img {
+    width: 20px;
+    top: -12px;
+}
+
+.prototype-draw.first-draw {
+    width: 165px;
+    height: 20px;
+}
+.prototype-draw.first-draw img {
+    margin: 3px 4px 0 0;
+    left: 25px;
+}
+.prototype-draw.first-draw .node-title {
+    margin-top: 3px;
+}
+.prototype-draw.first-draw .node-name {
+    width: 113px;
+    padding-left: 50px;
+}
+.prototype-draw.first-draw.bye .node-name {
+    color: #999;
+}
