@@ -1,4 +1,5 @@
 console.log('Treant :', Treant);
+console.log('Angular app :', app);
 
 function getPrototypeTree(todos) {
     // Make sure todos is an array
@@ -18,7 +19,7 @@ function getPrototypeTree(todos) {
 
     var protoChainArr = todos.map(function(todo) {
         var obj = todo.value;
-        obj.label = todo.label;
+        obj._label = todo._label;
         var protoChain = [];
         while (obj !== null) {
             /**
@@ -26,7 +27,7 @@ function getPrototypeTree(todos) {
              *   value: any;
              *   constructor: any;
              *   protoName: string;
-             *   label?: string;
+             *   _label?: string;
              * }
              */
             var protoIdent = {
@@ -34,8 +35,8 @@ function getPrototypeTree(todos) {
                 constructor: obj.constructor
             };
 
-            if (obj.label) {
-                protoIdent.label = obj.label;
+            if (obj._label) {
+                protoIdent._label = obj._label;
             }
 
             if (obj.hasOwnProperty('constructor')) {
@@ -81,8 +82,17 @@ function getPrototypeTree(todos) {
                     bingoIndex = current[keyArr[L - 1]].length;
                     current[keyArr[L - 1]].push({
                         text: {
-                            name: proto.label || proto.protoName,
-                            desc: Object.prototype.toString.call(proto.value)
+                            name: proto._label || proto.protoName,
+                            desc:
+                                Object.prototype.toString.call(proto.value) +
+                                ' : ' +
+                                Object.keys(proto.value)
+                                    .filter(function(key) {
+                                        if (key[0] !== '$') {
+                                            return true;
+                                        }
+                                    })
+                                    .join(', ')
                         },
                         _value: proto.value
                     });
@@ -115,10 +125,21 @@ window.onload = function() {
     Cat.prototype.constructor = Cat;
     var yarn = new Cat();
 
+    var childScope = angular.element(document.getElementById('child')).scope();
+    // TODO: 这么写有 bug 。。不管前面怎么样都应该是 6 个叶子节点！！
+    // var isolateScope1 = angular.element(document.getElementById('comp1')).scope();
+    // var isolateScope2 = angular.element(document.getElementById('comp2')).scope();
+    var isolateScope1 = angular.element(document.getElementById('comp1')).isolateScope();
+    var isolateScope2 = angular.element(document.getElementById('comp2')).isolateScope();
+
     var todos = [
-        { value: new Date(), label: 'new Date()' },
-        { value: function test() {}, label: 'function test() {}' },
-        { value: yarn, label: 'yarn' }
+        { value: new Date(), _label: 'new Date()' },
+        { value: function test() {}, _label: 'function test() {}' },
+        { value: yarn, _label: 'yarn' },
+        // { value: window.angular, _label: 'window.angular' },
+        { value: childScope, _label: 'child scope' },
+        { value: isolateScope1, _label: 'isolate scope (1)' },
+        { value: isolateScope2, _label: 'isolate scope (2)' },
     ];
     var data = {
         chart: {

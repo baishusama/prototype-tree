@@ -1,5 +1,5 @@
 {
-  "name": "js-prototype-tree",
+  "name": "prototype-tree",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -12,5 +12,8 @@
     "lodash": "^4.17.10",
     "raphael": "^2.2.7",
     "treantjs": "^1.0.0"
+  },
+  "devDependencies": {
+    "angular": "^1.7.0"
   }
 }
