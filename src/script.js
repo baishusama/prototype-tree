@@ -169,9 +169,9 @@ function getPrototypeTree(todos) {
                                 ' : ' +
                                 proto.properties
                                     .filter(function(key) {
-                                        // if (key[0] !== '$') {
+                                        if (key[0] !== '$') {
                                             return true;
-                                        // }
+                                        }
                                     })
                                     .join(', ')
                         },
@@ -212,6 +212,7 @@ window.onload = function() {
     var yarn = new Cat();
 
     var childScope = angular.element(document.getElementById('child')).scope();
+    var grandScope = angular.element(document.getElementById('grand')).scope();
     console.log('[test] childScope :',childScope);
     // TODO: 这么写有 bug 。。不管前面怎么样都应该是 6 个叶子节点！！
     // var isolateScope1 = angular.element(document.getElementById('comp1')).scope();
@@ -235,6 +236,8 @@ window.onload = function() {
         { value: Object, _label: 'Object' },
         { value: yarn, _label: 'yarn' },
         // { value: window.angular, _label: 'window.angular' },
+        { value: grandScope, _label: 'grand scope' },
+        { value: grandScope.$parent, _label: 'grand scope $parent' },
         { value: childScope, _label: 'child scope' },
         { value: childScope.parent, _label: 'childScope.parent' },
         // { value: childScope.$parent, _label: 'child\'s $parent scope' },
