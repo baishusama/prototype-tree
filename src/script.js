@@ -211,6 +211,7 @@ window.onload = function() {
     Cat.prototype.constructor = Cat;
     var yarn = new Cat();
 
+    var mainScope = angular.element(document.getElementById('main')).scope();
     var childScope = angular.element(document.getElementById('child')).scope();
     console.log('[test] childScope :',childScope);
     // TODO: 这么写有 bug 。。不管前面怎么样都应该是 6 个叶子节点！！
@@ -235,6 +236,7 @@ window.onload = function() {
         { value: Object, _label: 'Object' },
         { value: yarn, _label: 'yarn' },
         // { value: window.angular, _label: 'window.angular' },
+        { value: mainScope, _label: 'main scope' },
         { value: childScope, _label: 'child scope' },
         { value: childScope.parent, _label: 'childScope.parent' },
         // { value: childScope.$parent, _label: 'child\'s $parent scope' },

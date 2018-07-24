@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1.0"
+        >
+        <meta
+            http-equiv="X-UA-Compatible"
+            content="ie=edge"
+        >
+        <title>JS Prototype Tree</title>
+        <link rel="stylesheet" href="../../../node_modules/treantjs/Treant.css">
+        <link rel="stylesheet" href="../../normalize.css">
+        <link rel="stylesheet" href="../../style.css">
+
+        <script src="../../../node_modules/angular/angular.js"></script>
+    </head>
+    <body>
+        <h3>原型树：[[prototype]] === __proto__ === Object.getPrototypeOf</h3>
+
+        <p style="font-size: 12px;">各种构造函数视为实例对象：</p>
+
+        <ul style="padding-left: 20px; font-size: 12px;">
+            <li>Function</li>
+            <li>Date</li>
+            <li>History</li>
+            <li>Object</li>
+        </ul>
+
+        <div id="tree"></div>
+
+        <script src="../../../node_modules/lodash/lodash.js"></script>
+        <!-- Treantjs -->
+        <script
+            type="text/javascript"
+            src="../../../node_modules/raphael/raphael.js"
+        ></script>
+        <script
+            src="../../../node_modules/treantjs/Treant.js"
+        ></script>
+        <script src="../../prototype-tree.js"></script>
+        <script
+            src="script.js"
+        ></script>
+    </body>
+</html>
