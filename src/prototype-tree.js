@@ -2,36 +2,20 @@
  * TODO:
  * - 抽出一种统一的数据结构，再适配成 treant 所需要的，更灵活。
  * - 边界 case：`Object.create(null)` from [故意创建不具有典型原型链继承的对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype)
- * - Object.prototype 属性的属性特性
+ * - Object.prototype 属性的属性特性 more on: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype
  */
 
-/**
- * TODO:
- * `Object.prototype` more on: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype
- * `Object.keys` more on: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
- * `Object.getOwnPropertyNames` more on: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyNames
- * `_.isEqual` 判断的是什么呃？？
- */
-
-function PrototypeTree() {
-    // {
-    //     text: {
-    //         name: 'null'
-    //     },
-    //     HTMLclass: 'root',
-    //     _value: null,
-    //     children: []
-    // }
-
-    // this.text = {
-    //     name: 'null',
-    //     desc: ''
-    // };
-    // this.HTMLclass = 'root';
+function PrototypeTree(value, name) {
+    this._value = value || null;
+    this._nameArr = [name || '' + this._value];
     this.children = [];
-    this._name = 'null';
-    this._value = null;
 }
+PrototypeTree.prototype.appendName = function(name) {
+    this._nameArr.push(name);
+};
+/**
+ *  深度优先的 applyToAllNodes 方法
+ */
 PrototypeTree.prototype.applyToAllNodes = function applyToAllNodes(
     srcLocates,
     destLocates,
@@ -61,6 +45,7 @@ PrototypeTree.prototype.applyToAllNodes = function applyToAllNodes(
              * ImoNote:
              * 因为不确定 childTree 是不是一个 PrototypeTree 的实例，
              * 所以这里保险起见使用 .call 调用，而不是 childTree.applyToAllNodes
+             * TODO: 这里有可能使用尾递归优化么？
              */
             applyToAllNodes.call(childTree, srcLocates, destLocates, fn);
         });
@@ -92,16 +77,16 @@ function getPrototypeTree(todos) {
             /**
              * interface ProtoIdentInterface {
              *   value: any;
-             *   properties: any[];
-             *   constructor: any;
+             *   // properties: any[];
+             *   // constructor: any;
              *   name: string;
              *   _label?: string;
              * }
              */
             var protoIdent = {
                 value: curProtoObj,
-                properties: Object.getOwnPropertyNames(curProtoObj),
-                constructor: curProtoObj.constructor,
+                // properties: Object.getOwnPropertyNames(curProtoObj),
+                // constructor: curProtoObj.constructor,
                 name:
                     curProtoObj.constructor.name +
                     (curProtoObj.hasOwnProperty('constructor')
@@ -124,17 +109,14 @@ function getPrototypeTree(todos) {
 
     // Initialization
     // {
-    //     text: {
-    //         name: 'null'
-    //     },
-    //     HTMLclass: 'root',
     //     _value: null,
+    //     _nameArr: ['null'],
     //     children: []
     // };
     var prototypeTree = new PrototypeTree();
     console.log(
         '[test] #getPrototypeTree# After initialization, prototypeTree :',
-        prototypeTree
+        _.cloneDeep(prototypeTree)
     );
     // ProtoIdentInterface[][]
     protoChainArr.forEach(function(protoChain) {
@@ -170,20 +152,16 @@ function getPrototypeTree(todos) {
                         }
                     }
                 });
+
+                var name = proto._label || proto.name;
                 if (bingoIndex === -1) {
                     // 如果在孩子节点中没有找到 isEqual _value 的节点，那么基于 proto 创建孩子节点
                     bingoIndex = current.children.length;
-                    current.children.push({
-                        _name: [proto._label || proto.name],
-                        _prop: proto.properties,
-                        _value: proto.value
-                    });
+                    current.children.push(new PrototypeTree(proto.value, name));
                 } else {
                     // 如果在孩子节点中找到了 isEqual _value 的节点，那么记录到该孩子节点的 name 数组中
-                    //  keyArr.push(bingoIndex);
-                    current.children[bingoIndex]._name.push(
-                        proto._label || proto.name
-                    );
+                    // keyArr.push(bingoIndex);
+                    current.children[bingoIndex].appendName(name);
                 }
                 // 指针指向上面新创建的或者深比较值相同的孩子节点
                 current = current.children[bingoIndex];
@@ -202,7 +180,7 @@ function getPrototypeTree(todos) {
 function getThenTransformPrototypeTree(todos) {
     // 遍历树，并 stringify names
     return getPrototypeTree(todos)
-        .applyToAllNodes(['_name'], ['text', 'name'], stringifyName)
+        .applyToAllNodes(['_nameArr'], ['text', 'name'], stringifyName)
         .applyToAllNodes([], ['text', 'desc'], generateDescription);
 }
 
@@ -223,7 +201,7 @@ function stringifyName(names) {
         nameStr = Object.keys(nameObj)
             .map(function(name) {
                 var count = nameObj[name];
-                return name + ' (' + count + ') ';
+                return count > 1 ? name + ' (' + count + ') ' : name;
             })
             .join(',');
     } else if (typeof names !== 'string') {
@@ -236,11 +214,23 @@ function stringifyName(names) {
 // 字符串化描述
 function generateDescription(node) {
     var desc = '';
-    if (node._prop && node._value) {
+    if (node._value) {
         desc =
             Object.prototype.toString.call(node._value) +
             ' : ' +
-            node._prop
+            Object.getOwnPropertyNames(node._value)
+                .sort(function(a, b) {
+                    // 对长度不定的 iterate 进行升序排序
+                    var length = Math.min(a.length, b.length);
+                    for (var i = 0; i < length; i++) {
+                        var charCodeA = a.charCodeAt(i);
+                        var charCodeB = b.charCodeAt(i);
+                        if (charCodeA !== charCodeB) {
+                            return charCodeA - charCodeB;
+                        }
+                    }
+                    return a.length - b.length;
+                })
                 .filter(function(key) {
                     // if (key[0] !== '$') {
                     return true;

@@ -1,21 +1,6 @@
 console.log('Treant :', Treant);
 console.log('Angular app :', app);
 
-/**
- * TODO:
- * - 抽出一种统一的数据结构，再适配成 treant 所需要的，更灵活。
- * - 边界 case：`Object.create(null)` from [故意创建不具有典型原型链继承的对象](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype)
- * - Object.prototype 属性的属性特性
- */
-
-/**
- * TODO: 
- * `Object.prototype` more on: https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/prototype 
- * `Object.keys` more on: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/keys
- * `Object.getOwnPropertyNames` more on: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/getOwnPropertyNames
- * `_.isEqual` 判断的是什么呃？？
- */
-
 function applyToTreeNodes(tree, locates, fn) {
     // 对当前节点应用 fn
     var objLocates = locates.slice(0, locates.length - 1);
@@ -31,7 +16,7 @@ function applyToTreeNodes(tree, locates, fn) {
             applyToTreeNodes(childTree, locates, fn);
         });
     }
-    // TODO: return each tree ???
+
     return tree;
 }
 
@@ -170,7 +155,7 @@ function getPrototypeTree(todos) {
                                 proto.properties
                                     .filter(function(key) {
                                         // if (key[0] !== '$') {
-                                            return true;
+                                        return true;
                                         // }
                                     })
                                     .join(', ')
@@ -213,7 +198,7 @@ window.onload = function() {
 
     var mainScope = angular.element(document.getElementById('main')).scope();
     var childScope = angular.element(document.getElementById('child')).scope();
-    console.log('[test] childScope :',childScope);
+    console.log('[test] childScope :', childScope);
     // TODO: 这么写有 bug 。。不管前面怎么样都应该是 6 个叶子节点！！
     // var isolateScope1 = angular.element(document.getElementById('comp1')).scope();
     // var isolateScope2 = angular.element(document.getElementById('comp2')).scope();
@@ -244,7 +229,7 @@ window.onload = function() {
         { value: isolateScope1, _label: 'isolate scope #1' },
         { value: isolateScope1.$parent, _label: 'isolate scope #1 .$parent' },
         { value: isolateScope2, _label: 'isolate scope #2' },
-        { value: isolateScope2.$parent, _label: 'isolate scope #2 .$parent' },
+        { value: isolateScope2.$parent, _label: 'isolate scope #2 .$parent' }
     ];
     var data = {
         chart: {

@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -12,22 +11,29 @@
         >
         <title>JS Prototype Tree</title>
         <link rel="stylesheet" href="../../../node_modules/treantjs/Treant.css">
-        <link rel="stylesheet" href="../../normalize.css">
-        <link rel="stylesheet" href="../../style.css">
+        <link rel="stylesheet" href="../../assets/normalize.css">
+        <link rel="stylesheet" href="../../assets/style.css">
 
         <script src="../../../node_modules/angular/angular.js"></script>
     </head>
     <body>
-        <h3>原型树：[[prototype]] === __proto__ === Object.getPrototypeOf</h3>
+        <div
+            class="wrapper"
+            style="padding: 1rem;"
+        >
+            <h3>
+                原型树：[[prototype]] === __proto__ === Object.getPrototypeOf
+            </h3>
 
-        <p style="font-size: 12px;">各种构造函数视为实例对象：</p>
+            <p style="font-size: 12px;">各种构造函数视为实例对象：</p>
 
-        <ul style="padding-left: 20px; font-size: 12px;">
-            <li>Function</li>
-            <li>Date</li>
-            <li>History</li>
-            <li>Object</li>
-        </ul>
+            <ul style="padding-left: 20px; font-size: 12px;">
+                <li>Function</li>
+                <li>Date</li>
+                <li>History</li>
+                <li>Object</li>
+            </ul>
+        </div>
 
         <div id="tree"></div>
 
@@ -37,12 +43,8 @@
             type="text/javascript"
             src="../../../node_modules/raphael/raphael.js"
         ></script>
-        <script
-            src="../../../node_modules/treantjs/Treant.js"
-        ></script>
+        <script src="../../../node_modules/treantjs/Treant.js"></script>
         <script src="../../prototype-tree.js"></script>
-        <script
-            src="script.js"
-        ></script>
+        <script src="script.js"></script>
     </body>
 </html>

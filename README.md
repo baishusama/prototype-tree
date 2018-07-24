@@ -2,6 +2,21 @@
 
 这是一个为了学习、理解、测试原型和原型链，而编写的一个可视化 demo 。
 
+## DEMO
+
+运行步骤：
+
+1. 如果没有全局安装 browser-sync，那么先 `sudo npm i -g browser-sync`
+2. 进入项目的根目录，启动 `browser-sync start --server --directory --files "**/*" --port 5000`
+3. 访问关心的 html 文件，查看效果
+
+### VanillaJS
+
+访问 `http://localhost:5000/src/demos/vanillajs/index.html`，可以看到如图效果：
+
+![vanillajs.html](http://ohz4k75du.bkt.clouddn.com/markdown/1532441477079.png)
+
+
 ## ImoNote
 
 ### ECMAScript
