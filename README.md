@@ -6,7 +6,7 @@
 
 运行步骤：
 
-1. 如果没有全局安装 browser-sync ，那么先 `sudo npm i -g browser-sync`
+1. 如果没有全局安装 browser-sync，那么先 `sudo npm i -g browser-sync`
 2. 进入项目的根目录，启动 `browser-sync start --server --directory --files "**/*" --port 5000`
 3. 访问关心的 html 文件，查看效果
 
