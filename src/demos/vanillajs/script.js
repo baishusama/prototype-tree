@@ -64,7 +64,7 @@ window.onload = function() {
             }
         },
 
-        nodeStructure: getThenTransformPrototypeTree(todos)
+        nodeStructure: getThenTransformPrototypeTree(todos, true)
         /*
             {
                 text: { name: 'null' },

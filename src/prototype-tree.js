@@ -177,11 +177,22 @@ function getPrototypeTree(todos) {
 }
 
 // 供外部调用的函数，可以获得符合 Treant 要求的数据格式
-function getThenTransformPrototypeTree(todos) {
+function getThenTransformPrototypeTree(todos, hasDesc) {
     // 遍历树，并 stringify names
-    return getPrototypeTree(todos)
-        .applyToAllNodes(['_nameArr'], ['text', 'name'], stringifyName)
-        .applyToAllNodes([], ['text', 'desc'], generateDescription);
+    var result = getPrototypeTree(todos).applyToAllNodes(
+        ['_nameArr'],
+        ['text', 'name'],
+        stringifyName
+    );
+
+    if (hasDesc) {
+        result = result.applyToAllNodes(
+            [],
+            ['text', 'desc'],
+            generateDescription
+        );
+    }
+    return result;
 }
 
 // 字符串化名称
